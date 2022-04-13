@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Darwin Core Archive PELD - ILOC</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Banco de Dados Coral Sol</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="padrao_db.html">
+    <span class="fa fa-database fa-lg"></span>
+     
+    Diretrizes BD
+  </a>
+</li>
+<li>
+  <a href="dados.html">
+    <span class="fa fa-check-double fa-lg"></span>
+     
+    Boas práticas BD
+  </a>
+</li>
+<li>
+  <a href="github.html">
+    <span class="fa fa-github fa-lg"></span>
+     
+    Github LABAR
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:&lt;silveira.tcl@gmail.com&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/ufsclabar">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Darwin Core Archive PELD - ILOC</h1>
+
+</div>
+
+
+<style>
+body {
+text-align: justify}
+</style>
+<div id="darwin-core-archive" class="section level2">
+<h2>1. Darwin Core Archive</h2>
+<p>O Darwin Core Archive (DwC-A) é o arquivo padrão para publicação de dados da biodiversidade usando os <a href="http://rs.tdwg.org/dwc/terms.htm#samplingProtocol"><strong>termos</strong></a> Darwin Core. Este formato de arquivo é o padrão para publicação de dados no <a href="https://obis.org/"><strong>OBIS</strong></a> e <a href="https://www.gbif.org/"><strong>GBIF</strong></a>.</p>
+<p>O modelo de organização do Darwin Core Archive é descrito como um esquema de estrela com uma única tabela <strong>core</strong>, esta contendo occorrências ou eventos no centro da estrela. Outras tabelas podem ser associadas a tabela <strong>core</strong>, estas podem trazer outras informações associadas aos registros de ocorrências como: densidade, método de coleta, temperatura, dentre outras. Juntamente com os componentes DwC-A são adicionados também dois arquivos XML: um descreve o arquivo e a estrutura dos dados, <strong>meta.xml</strong>, e o outro contêm os metadados. <strong>eml.xml</strong>. Ao final todos estes componentes são transformados em uma pasta zip. Toda documentação a respeito do <strong>DwC-A</strong> está disponível no <a href="https://dwc.tdwg.org/text/">Darwin Core text guide</a>. <br><br></p>
+<p><img src= "figs/dwc-a_1.png" style= "width:80%"> <br><br><br> <em>Estrutura de um Darwin Core Archive</em><br />
+<br><br></p>
+</div>
+<div id="publicação-dos-dados-da-biodiversidade-no-obisgbif" class="section level2">
+<h2>2. Publicação dos Dados da biodiversidade no OBIS/GBIF</h2>
+<p>A publicação dos dados da biodiversidade amostrada pelo <strong>PELD-ILOC</strong> visa atender a <a href="http://www.cnpq.br/web/guest/view/-/journal_content/56_INSTANCE_0oED/10157/4621110"><strong>Resolução Normativa 009/16</strong></a> que intitui a Política de Dados do Programa de <strong>Pesquisa Ecológica de Longa Duração (PELD)</strong>. O objetivo desta RN é regulamentar as formas de disponibilização, acesso e uso dos dados gerados pelos pesquisadores da rede PELD.</p>
+<p>Considerando a importância dos dados coletados no âmbito <strong>PELD-ILOC</strong> e a sua importância para a gestão ambiental, estes devem estar disponíveis para a sociedade. Além disso, o PELD é membro <a href="https://lternet.edu/international/">International Long Term Ecological Research (ILTER)</a> e o <a href="https://www.gbif.org/">Global Biodiversity Information Facility (GBIF)</a>.</p>
+<p>Tendo em vista a importância dos dados obtidos até o momento, é de extrema importância que estes estejam <strong>organizados e conferidos</strong>. Desata maneira é garantida a qualidade dos dados publicados, bem como fica otimizada a curadoria e processamento destes para publicação nos repositórios de dados da biodiversidade. <br><br></p>
+<hr />
+</div>
+<div id="construção-do-dwc-a-a-partir-de-dados-do-peld-iloc-peixes-recifais" class="section level2">
+<h2>3. Construção do DwC-A a partir de dados do PELD-ILOC (Peixes Recifais)</h2>
+<p>Este item visa apresentar um exemplo de conversão de um arquivo em formato <strong>tidy</strong>, ou longo, para os arquivos necessários na criação de um <strong>Darwin Core Archive (DwC-A)</strong>. Para reproduzir o exemplo acesse uma amostra dos dados fictícios <a href="https://github.com/peld-iloc/DwC-A_example">neste repositório</a>. Os scripts usados para a construção dos <strong>DwC-As</strong> dos dados do <strong>PELD-ILOC</strong> estarão disponíveis no <strong>Github</strong> em repositórios privados. <br><br></p>
+<div id="importando-os-dados" class="section level3">
+<h3>3.1 Importando os Dados</h3>
+<pre class="r"><code>rm(list = ls())
+
+library(tidyverse)
+
+# insert you directory
+baseDir = &quot;diretorio onde estão os dados&quot;
+
+# file name
+fish_data= &quot;peld_iloc_peixes_recifais_EXEMPLO_Thiago_Silveira_2020_08_11.csv&quot;
+coords_data = &quot;Peld_Site_Coordinates_2021_07_12.csv&quot;
+
+DF.sites = read_delim(file.path(baseDir, fish_data),
+             na=&quot;NA&quot;,
+             delim = &quot;,&quot;,
+             skip_empty_rows = TRUE)
+spec(DF.sites)
+glimpse(DF.sites)
+
+DF.coords = read_delim(file.path(baseDir, coords_data),
+             na=&quot;NA&quot;,
+             delim = &quot;,&quot;,
+             skip_empty_rows = TRUE)
+spec(DF.coords)
+glimpse(DF.coords)</code></pre>
+<p><br><br></p>
+</div>
+<div id="correção-de-coordenadas" class="section level3">
+<h3>3.2 Correção de coordenadas</h3>
+<p>Devido ao formato incorreto das coordenadas (ex .: lon -32.234.234 | lat 3.808.942) foi identificada a necessidade de uma verificação substancial em todas as coordenadas e nomes de sites apresentados no arquivo original. Após uma primeira verificação, foram identificados formatos decimais incorretos (ex .: -33.345.323, …) e valores invertidos para latitude e longitude.</p>
+<p>Para corrigir os nomes e coordenadas dos sites, foi criada uma planilha contendo os nomes e coordenadas corrigidos para todos os sites pesquisados<a href="https://github.com/peld-iloc/site_coordinates">(diponível aqui)</a>. As correções foram realizadas por meio de inspeção nas ortofotografias e comunicação pessoal com os pesquisadores do <strong>PELD-ILOC</strong>. Além disso, comparamos as coordenadas disponíveis com os mapas apresentados nas publicações Longo et al. (2015) e Krajewski e Floeter (2011). Após a verificação das coordenadas e nomes dos sites, foi criada uma planilha com os dados corrigidos, aqui denominada <strong>DF.coords</strong> no script. <br></p>
+<pre class="r"><code>DF.coords
+
+# Joining the tables using as reference the site (DF.sites) and site_coords (DF.coords)
+DF.sites = DF.sites%&gt;%
+  left_join(DF.coords, by = c(&quot;site&quot; = &quot;site_coord&quot;), copy = TRUE)
+  
+# Reordering DF.sites with the corrected coordinates and site names
+DF.sites = DF.sites %&gt;% 
+  select(c(-site, -lon_DD, -lat_DD, -island_coord, -checking_status, -Obs)) %&gt;% 
+  relocate(c(lon_DD_coord, lat_DD_coord), .after = observer)  %&gt;%
+  relocate(New_name_coord, .after = island) 
+
+
+DF.sites = DF.sites %&gt;% 
+dplyr::rename(site = New_name_coord,
+              lon_DD = lon_DD_coord,
+              lat_DD = lat_DD_coord)
+DF.sites</code></pre>
+<p><br><br></p>
+</div>
+<div id="tabela-event-core" class="section level3">
+<h3>3.3 Tabela Event Core</h3>
+<p>A tabela <strong>event Core</strong> armazena as informações sobre o evento de amostragem. Todas as informações sobre o evento de amostragem, <strong>event Core</strong>, estão vinculadas aos eventos registrados em <strong>eventID</strong>. O <strong>eventID</strong> consiste na combinação de ilha-ano-transect_number (ex.: noronha_2007_65). As próximas informações consideradas foram <strong>eventDate</strong>, data de amostragem formatada como AAAA-mm-dd, AAAA-mm ou AAAA. O registro completo da data assumiu formatos distintos devido à ausência das informações nos dados originais, arquivo excel. Como nem todas as amostragens foram realizadas no mesmo dia, para cada transecto, o <strong>eventDate</strong> foi preenchido no nível <strong>transect_ID</strong>.</p>
+<p>A latitude e a longitude, <strong>em graus decimais</strong>, foram extraídas dos dados originais. Como os locais de amostragem ocorreram em ilhas diferentes com um ponto fixo, podemos preencher <strong>decimalLongitude</strong> e <strong>decimalLatitude</strong> no evento de nível de site. O censo visual varia em profundidade no mesmo local, então incorporamos o termo <strong>maximumDepthInMeters</strong>, preenchendo o registro de profundidade no nível do transecto do local.</p>
+<p>A lista de <strong>core term</strong> definidos pelo Darwin Core mostra os termos que descrevem a localização como <strong>island</strong>, nos dados do excel esta informação é descrita como <strong>locality</strong>. Além disso, os principais dados são descritos na coluna <strong>site</strong> como o nome do local levantado em cada ilha, portanto usamos esta informação como <strong>site</strong>.</p>
+<ul>
+<li>Dados disponíveis na planilha:
+<ul>
+<li>eventID: “transect_ID” - ex. noronha_2007_65 (island_year_transect_number)</li>
+<li>eventDate: YYYY-mm-dd, YYYY-mm or YYYY</li>
+<li>decimalLatitude: -3.00 (e.g.: -3.808942);</li>
+<li>decimalLongitude: -32.0 (e.g.: -32.390214);</li>
+<li>island: island name</li>
+<li>locality: site name</li>
+<li>georeferenceProtocol: core term presenting “description or reference to the methods used to determine the spatial footprint, coordinates, and uncertainties”.</li>
+</ul></li>
+<li>Informações adicionais adicionadas com este script:
+<ul>
+<li>samplingProtocol: “Underwater Visual Survey - 50 meters x 2 meters transects”</li>
+<li>samplingEffort: “one observer by 50x2 underwater visual survey”</li>
+<li>sampleSizeValue: “100”</li>
+<li>sampleSizeUnit: “square meter”</li>
+<li>geodeticDatum: “WGS84”</li>
+<li>verbatimCoordinateSystem: “decimal degrees”</li>
+<li>Country: “Brazil”</li>
+<li>countryCode: “BR”</li>
+</ul></li>
+</ul>
+<pre class="r"><code># Data from long format data - Reshape Data
+
+#Creating a data column handling missing months and days as &quot;Date&quot;
+DF.sites = DF.sites %&gt;%
+    mutate(across(everything(), as.character))%&gt;%
+    mutate(Date = ifelse(is.na(year_YYYY) == FALSE &amp; is.na(month_mm) == TRUE &amp; is.na(day_dd) == TRUE, year_YYYY,
+                          ifelse(is.na(year_YYYY) == FALSE &amp; is.na(month_mm) == FALSE &amp; is.na(day_dd) == TRUE, paste(year_YYYY,month_mm, sep=&quot;-&quot;),
+                            ifelse(is.na(year_YYYY) == FALSE &amp; is.na(month_mm) == FALSE &amp; is.na(day_dd) == FALSE, 
+                                   paste(year_YYYY,month_mm, day_dd, sep = &quot;-&quot;), paste(&quot;NA&quot;))))) %&gt;% 
+    arrange(as.integer(transect_n))
+
+DF.sites
+
+
+# Aggregating by unique transect_id, locality, site, Date, lat_DD, lon_DD
+DF.event = DF.sites %&gt;%
+    dplyr::group_by(transect_id, island, site, Date, depth_m, lat_DD, lon_DD)
+
+# changing column names to DwC-A terms
+event_core = DF.event %&gt;%
+  dplyr::rename(eventID = transect_id, 
+     locality = site,
+     eventDate = Date,
+     maximumDepthInMeters = depth_m,
+     decimalLatitude = lat_DD,
+     decimalLongitude = lon_DD) %&gt;%
+    dplyr::select(eventID, island, locality, eventDate,maximumDepthInMeters, decimalLatitude, decimalLongitude,  georeferenceProtocol)
+
+  
+# Pasting Additional information 
+event_core = event_core %&gt;% 
+    add_column(samplingProtocol = &quot;Underwater Visual Survey - 20 meters x 2 meters transects&quot;,
+    samplingEffort = &quot;one observer by 20 meters x 2 meters Underwater Visual Survey&quot;,
+    sampleSizeValue = &quot;40&quot;,
+    sampleSizeUnit = &quot;square meter&quot;,
+    geodeticDatum = &quot;WGS84&quot;,
+    verbatimCoordinateSystem = &quot;decimal degrees&quot;,
+    Country = &quot;Brazil&quot;,
+    countryCode = &quot;BR&quot;) 
+
+# Formatting - Islands names
+event_core = event_core %&gt;%
+    mutate(island = stringr::str_replace_all(island, pattern = &quot;noronha&quot;, replacement = &quot;Fernado de Noronha&quot;)) %&gt;% 
+    mutate(island = stringr::str_replace_all(island, pattern = &quot;rocas&quot;, replacement = &quot;Atol das Rocas&quot;)) %&gt;% 
+    mutate(island = stringr::str_replace_all(island, pattern = &quot;stpauls_rocks&quot;, replacement = &quot;São Pedro e São Paulo&quot;)) %&gt;% 
+    mutate(island = stringr::str_replace_all(island, pattern = &quot;trindade&quot;, replacement = &quot;Trindade&quot;)) 
+
+# Formatting - locality - taking off &quot;_&quot; and capitalizing the first letter
+# special characters
+# unique(as.factor(event_core$locality)) for mapping locality names
+event_core = event_core %&gt;%
+    mutate(locality = str_replace_all(locality, pattern = &quot;_&quot;, replacement = &quot; &quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Praia da Conceicao&quot;, replacement = &quot;Praia da Conceição&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Laje Dois Irmaos&quot;, replacement = &quot;Laje Dois Irmãos&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot; Cemiterio&quot;, replacement = &quot; Cemitério&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Salao&quot;, replacement = &quot;Salão&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Cabeco Tartaruga&quot;, replacement = &quot;Cabeço Tartaruga&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Boia&quot;, replacement = &quot;Bóia&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Naufragio&quot;, replacement = &quot;Naufrágio&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Tunel&quot;, replacement = &quot;Túnel&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Farilhoes&quot;, replacement = &quot;Farilhões&quot;)) %&gt;% 
+    mutate(locality = stringr::str_replace_all(island, pattern = &quot;Paredao&quot;, replacement = &quot;Paredão&quot;))
+    
+rm(DF.event)
+
+event_core</code></pre>
+<p><br><br></p>
+</div>
+<div id="tabela-occurrence-extension" class="section level3">
+<h3>3.4 Tabela Occurrence Extension</h3>
+<p>A próxima tabela tem os nomes científicos como <strong>cientificName</strong> e os códigos de espécies listados em <strong>taxonID</strong>. Novamente, todas as ocorrências estão vinculadas ao respectivo transecto, nesta tabela a referência ao transecto é chamada de <strong>id</strong>. Na coluna id da tabela, esta faz referência aos eventos na tabela principal. Cada ocorrência, cada espécie, é rotulada como <strong>ocorrenceID</strong> seguindo como registros sequenciais (occ_1, occ_2, …).</p>
+<p>Antes da tabela final, todas as espécies foram validadas usando a função <strong>wormsbynames</strong> (pacote worms). Todos os registros com problemas relativos a nomes foram verificados com os especialistas do PELD-ILOC. Além disso, criamos a coluna <em>taxonRank</em> indicando a classificação em espécie ou gênero.</p>
+<p>Note que não temos como inserir especies como <strong>Malacoctenus_sp1</strong> ou <strong>Malacoctenus_sp1</strong>. Estes dados ficam de referência interna para os pesquisadores do <strong>PELD-ILOC</strong> e para a construção desta parte da tabela a classificação ficou em <strong>gênero</strong>. Algumas espécies não estão no worms (ex.: <em>Menaphorus punticulatus</em>) e foi detectada pelo procedimento. Neste caso, esta foi confirmada manualmente. <br><br></p>
+<pre class="r"><code>library(worms)
+
+# Getting species and transect_id
+DF.occ = DF.sites %&gt;%
+    arrange(as.integer(transect_n)) %&gt;% 
+    select(transect_id, transect_n, species_name, observer, abun, size_cm, temp_c)
+
+# adding occurrenceID as occ_n and changing names
+DF.occ = DF.occ %&gt;% 
+    add_column( occurrenceID = paste0(DF.occ$transect_id,&quot;_&quot;,&quot;occ_&quot;,row.names(DF.occ))) %&gt;% 
+    select(-transect_n) 
+    
+# editing names
+DF.occ = DF.occ %&gt;% 
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;_&quot;, replacement = &quot; &quot;)) %&gt;% 
+    mutate(species_name  = str_to_sentence(species_name, locale = &quot;pt&quot;)) %&gt;% 
+    relocate(occurrenceID, .after= transect_id)
+
+
+library(worms)
+sp_Names = unique(DF.occ$species_name)
+scNames_rank = wormsbynames(sp_Names, verbose = F)
+
+# malacoctenus_sp1                                     no match                                 
+# kyphosus_spp                                         no match                                 
+# menaphorus_punticulatus                              no match                                 
+# entomacrodus_spp                                     no match                                 
+# coryphopterus_spb                                    no match                                 
+# sparisoma_spp                                        no match                                 
+# malacoctenus_sp2                                     no match                                 
+# malacoctenus_sp3                                     no match                                 
+# ophioblennius_spp                                    no match   
+
+
+# Changing names in DF.occ 
+DF.occ = DF.occ %&gt;%
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;Coryphopterus spb&quot;, replacement = &quot;Coryphopterus&quot;)) %&gt;% # genus
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;Entomacrodus spp&quot;, replacement = &quot;Entomacrodus&quot;)) %&gt;%  # genus
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;Kyphosus spp&quot;, replacement = &quot;Kyphosus&quot;)) %&gt;% # genus
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;Malacoctenus sp1&quot;, replacement = &quot;Malacoctenus&quot;)) %&gt;% # genus
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;Malacoctenus sp2&quot;, replacement = &quot;Malacoctenus&quot;)) %&gt;% # genus
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;Malacoctenus sp3&quot;, replacement = &quot;Malacoctenus&quot;)) %&gt;% # genus 
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;Ophioblennius spp&quot;, replacement = &quot;Ophioblennius&quot;)) %&gt;% # genus
+    mutate(species_name = str_replace_all(species_name, pattern = &quot;Sparisoma spp&quot;, replacement = &quot;Sparisoma&quot;)) # genus
+
+# running again
+sp_Names = unique(DF.occ$species_name)
+scNames_rank = wormsbynames(sp_Names, verbose = F)
+
+# Not in worms database 
+DF.occ %&gt;%
+  filter(species_name == &quot;Menaphorus punticulatus&quot;)
+
+# Create df for full join
+name_cd_rk = scNames_rank %&gt;% 
+  select(scientificname, lsid, rank)
+
+DF.occ = DF.occ%&gt;%
+  full_join(name_cd_rk, by = c(&quot;species_name&quot; = &quot;scientificname&quot; ))
+
+# Checking the existence of issues represented as &quot;NA&quot;
+# As expected just for Menaphorus punticulatus, without lsid
+DF.occ %&gt;%
+  filter(is.na(lsid) == TRUE) 
+
+# Filling rank for Menaphorus punticulatus  
+DF.occ = DF.occ %&gt;%
+  mutate_at(vars(rank), funs(ifelse(species_name == &quot;Menaphorus punticulatus&quot;,&quot;Species&quot;, . )))
+
+DF.occ %&gt;%
+  filter(is.na(rank) == TRUE) #ok
+
+
+DF.occ = DF.occ %&gt;% 
+dplyr::rename(
+  scientificName = species_name,
+  scientificNameID = lsid,
+  taxonRank = rank, 
+  recordedBy = observer,
+  id = transect_id)
+
+
+# Adding organismQuantityType and basis of record
+DF.occ = DF.occ %&gt;% 
+  add_column(organismQuantityType = &quot;number of individuals in 20 meters x 2 meters Underwater Visual Survey&quot;,
+             basisOfRecord = &quot;Human Observation&quot;)
+
+DF.occ_obs_count = DF.occ
+
+DF.occ = DF.occ %&gt;% 
+  select(c(-abun, -size_cm, -temp_c))</code></pre>
+<p><br><br></p>
+</div>
+<div id="tabela-extended-measurements-or-facts" class="section level3">
+<h3>3.5 Tabela Extended Measurements or Facts</h3>
+<p>Finalmente, podemos construir a tabela <strong>MeasurementOrFact</strong>. Nesta tabela, descreveremos algumas informações associadas ao <strong>id</strong> e <strong>occurenceID</strong>.</p>
+<p>Primeiro adicionaremos o tipo de medição da coluna <strong>measurementValue</strong>, três níveis - abundância, comprimento e profundidade. A próxima informação necessária é <strong>measureUnity</strong> para especificar as unidades densidade, comprimento em centímetros e temperatura em graus celsius. A próxima informação é o valor de medição, os valores observados para densidade e comprimento, no arquivo excel são as colunas <strong>abun</strong> e <strong>size_cm</strong>. Por fim, adicionaremos o termo <strong>recordedBy</strong> indicando quem fez a observação, no arquivo excel definido como <strong>observador</strong>. <br><br></p>
+<pre class="r"><code>#create DF with id, occurenceID, recordedBy, with size_cm, abun and temp_c
+DF.eMOF_start = DF.occ_obs_count %&gt;% 
+  select(id, occurrenceID, recordedBy, size_cm, abun, temp_c) %&gt;% 
+  mutate(recordedBy = str_replace_all(recordedBy, pattern = &quot;_&quot;, replacement = &quot; &quot;)) %&gt;% 
+  mutate(recordedBy = str_to_title(recordedBy, locale = &quot;pt&quot;))
+
+
+
+# Table abundance
+#create table  measurementType abundance
+#create table  measurementUnity  number of individuals in the transec 
+#create measurementValue - abund 
+
+DF.eMOF_abun = DF.eMOF_start %&gt;% 
+  select(-size_cm, -temp_c) %&gt;% 
+  dplyr::rename(measurementValue =&quot;abun&quot; ) %&gt;% 
+  add_column(measurementType = &quot;abundace&quot;,
+             measurementeUnity = &quot;number of individuals counted on the transect&quot;)
+            
+             
+str(DF.eMOF_abun)
+
+# Table length
+# create table  measurementType length
+# create table  measurementUnity  number of individuals in the transec 
+# create table  measurementValue length in cm
+
+
+DF.eMOF_length = DF.eMOF_start %&gt;% 
+  select(-abun, -temp_c) %&gt;% 
+  dplyr::rename(measurementValue =&quot;size_cm&quot; ) %&gt;% 
+  add_column(measurementType = &quot;length&quot;,
+             measurementeUnity = &quot;mean centimeters&quot;)
+
+
+#create table  measurementType temperature
+#create table  measurementUnity Celsius degrees 
+#create table  measurementValue temp_c
+
+DF.eMOF_temp = DF.eMOF_start %&gt;% 
+  select(-abun, -size_cm) %&gt;% 
+  dplyr::rename(measurementValue = &quot;temp_c&quot;) %&gt;% 
+  add_column(measurementType = &quot;temperature&quot;,
+             measurementeUnity = &quot;Celsius degrees&quot;)
+
+# Binding rows
+
+DF.eMOF = bind_rows(DF.eMOF_abun, DF.eMOF_length, DF.eMOF_temp)
+
+rm(DF.eMOF_start,DF.eMOF_abun, DF.eMOF_length, DF.eMOF_temp, DF.sites)</code></pre>
+<p><br><br></p>
+</div>
+<div id="salvando-os-dwc-a" class="section level3">
+<h3>3.6 Salvando os DwC-A</h3>
+<pre class="r"><code>files = list(event_core, DF.occ, DF.eMOF) 
+data_names = c(&quot;event_core&quot;,&quot;DF_occ&quot;,&quot;DF_eMOF&quot;)
+dir.create(&quot;Dwc_Files&quot;)
+
+
+for(i in 1:length(files)) {     
+path = paste0(getwd(),&quot;/&quot;,&quot;DwC_Files&quot;)
+write_csv(files[[i]], paste0(path,&quot;/&quot;,data_names[i],&quot;.csv&quot;), )
+}</code></pre>
+<p><br><br></p>
+</div>
+</div>
+<div id="referências" class="section level2">
+<h2>4. Referências</h2>
+<p><a href="https://obis.org/manual/dataformat/" class="uri">https://obis.org/manual/dataformat/</a></p>
+<p><a href="https://github.com/gbif/ipt/wiki/samplingEventData#templates" class="uri">https://github.com/gbif/ipt/wiki/samplingEventData#templates</a></p>
+<p><a href="https://github.com/gbif/ipt/wiki/samplingEventData#required-dwc-fields" class="uri">https://github.com/gbif/ipt/wiki/samplingEventData#required-dwc-fields</a></p>
+<p><a href="http://rs.tdwg.org/dwc/terms.htm#samplingEffort" class="uri">http://rs.tdwg.org/dwc/terms.htm#samplingEffort</a> - Terms description</p>
+<p><a href="https://www.tidyverse.org/" class="uri">https://www.tidyverse.org/</a> <br><br></p>
+<p>Krajewski, J. P. &amp; Floeter, S. R. Reef fish community structure of the Fernando de Noronha Archipelago (Equatorial Western Atlantic): The influence of exposure and benthic composition. Environ. Biol. Fishes 92, 25–40 (2011).</p>
+<p>Longo, G. O. et al. Between-habitat variation of benthic cover, reef fish assemblage and feeding pressure on the benthos at the only atoll in South Atlantic: Rocas atoll, NE Brazil. PLoS One 10, 1–29 (2015).</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

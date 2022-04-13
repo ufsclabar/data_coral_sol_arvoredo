@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Github LABAR</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Banco de Dados Coral Sol</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="padrao_db.html">
+    <span class="fa fa-database fa-lg"></span>
+     
+    Diretrizes BD
+  </a>
+</li>
+<li>
+  <a href="dados.html">
+    <span class="fa fa-check-double fa-lg"></span>
+     
+    Boas práticas BD
+  </a>
+</li>
+<li>
+  <a href="github.html">
+    <span class="fa fa-github fa-lg"></span>
+     
+    Github LABAR
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:&lt;silveira.tcl@gmail.com&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/ufsclabar">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Github LABAR</h1>
+
+</div>
+
+
+<style>
+body {
+text-align: justify}
+</style>
+<div id="visão-geral" class="section level1">
+<h1>1. Visão Geral</h1>
+<p>Com o objetivo de documentar procedimentos e armazenar recursos para processamento, divulgação e análise dos dados obtidos pelo <strong>Projeto Coral Sol</strong> foi idealizada a criação de um perfil no <a href="https://github.com/">Github</a>.</p>
+</div>
+<div id="indicações-de-uso" class="section level1">
+<h1>2. Indicações de uso</h1>
+<ul>
+<li>Armazenar recursos para curadoria e acesso aos bancos de dados</li>
+<li>Atuar como um respositório de dados públicos e privados do projeto (sites, web-apps, manuais, algoritmos, etc…)</li>
+<li>Ser um repositório para o compartilhamento de dados e código entre a equipe</li>
+<li>Opção de repositório de dados de publicações</li>
+</ul>
+<p><br><br></p>
+<p><img src= "figs/git_27.png" style= "width:60%"> <br><br></p>
+<p>Para quem não está familiarizado com o controle de versão e as ferramentas Git e Github, a seguir é feita uma introdução ao tema.</p>
+<hr />
+</div>
+<div id="introdução-ao-controle-de-versão" class="section level1">
+<h1>3. Introdução ao Controle de Versão</h1>
+<p><img src= "figs/git_1.png" style= "width:60%"></p>
+<p><em><a href="http://phdcomics.com/">Phd Comics</a></em> <br><br></p>
+<p>Quem nunca nomeou um arquivo como “final”? Depois de algumas releituras e correções você salva com outro nome, “final_2”. Depois desta versão, alguém analisa e faz observações, e você prontamente salva o arquivo como “final_2_fulano_version”, e assim por diante. Imagine este mesmo documento ficando na “geladeira” por alguns meses e você quer retornar de onde parou. Ainda existe a opção de alguém fazer alterações e <strong>não mudar o nome do arquivo</strong>. Neste momento fica muito difícil saber onde parou, ainda mais podendo ficar na dúvida de qual é o arquivo mais antigo.</p>
+<p>Nomear arquivos com diferentes nomes é uma maneira intuitiva de se fazer <strong>controle de versão</strong> de arquivos, até pode funcionar para problemas menos complexos. No entanto, quando trabalhamos em grupos de pesquisa, com várias pessoas editando textos e códigos, fica difícil gerenciar o histórico de versões de um arquivo, ainda mais vários. Felizmente, hoje existem ferramentas que nos auxiliam no controle de versão, tanto em nossas máquinas quanto em repositórios <em>online</em>.</p>
+<hr />
+</div>
+<div id="git" class="section level1">
+<h1>4. Git</h1>
+<p>Lançado em 2005, <a href="https://git-scm.com/">GIT</a> é um software de <strong>controle de versão</strong> livre. Esta ferramenta permite o rastreio de alterações em qualquer tipo de conjundo de arquivos. O uso do controle de versão permite velocidade no trabalho e integridade de dados, muito indicado em trabalhos em grupo. Ainda, permite a evolução dos projetos de forma não linear, possibilitando a criação de diferentes abordagens sem comprometer os dados originais. Todo o diretório de arquivos onde o <strong>Git</strong> está operando toda e qualquer mundança é identificada e recuperável. <br><br></p>
+<p><img src= "figs/git_2.png" style= "width:60%"> <br><br></p>
+<p>Linus Torvalds criou o <strong>Git</strong> para o desenvolvimento do sistema operacional Linux Kernel. Segundo o próprio autor Git significa <a href="https://linux.die.net/man/1/git">Git - The Stupid Content Tracker</a>. Existem outros programas de controle de versão, no momento o Git é um dos mais utilizados pela comunidade de desenvolvedores.</p>
+<p>O controle de versão Git assemlha-se a uma árvore, tendo um ramo principal chamado de <code>master</code>. O master pode ter ramos paralelos que podem evoluir juntamente com o <code>master</code>, estes são chamados de <code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg>, e cada um deles tem um nome. Cada círculo na figura corresponde a uma versão do diretório, ou um <code>commit</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg>. Os ramos <code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg> podem ser criados por diferentes pessoas ou por um mesmo usuário. A aplicação prática da criação de ramos é, por exemplo, explorar diferentes tipos de abordagens estatísticas distintas da usada no <code>master</code>. <br><br></p>
+<p><img src= "figs/git_3.png" style= "width:100%"></p>
+<p><em>“Branching” em um repositório Git</em><br />
+<br><br></p>
+<p>Imagine que após alguns testes, os usuários que estão trabalhando neste diretório discutem e avaliam que as contribuições podem ser incorporadas ao master. Note que a versão original antes da criação dos <code>branch</code>#1 e #2 permanece preservada. Caso nenhuma das abordagens seja ideal, os usuários podem decidir a voltar para as versões anteriores, criar um novo <code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg> e explorar outras alternativas. Tudo isso sem comprometer o que já foi realizado.</p>
+<hr />
+</div>
+<div id="github" class="section level1">
+<h1>5. Github</h1>
+<p><img src= "figs/git_4.png" style= "width:80%"> <br><br></p>
+<p><a href="https://github.com/">Github</a> é um serviço de hospedagem na internet para desenvolvimento de software e controle de versão (Git). Em uma definição mais simplificada, pode-se dizer que o Github seria uma rede social onde desenvolvedores compartilham repositórios de arquivos e trabalham em equipe, <strong>tudo com controle de versão</strong>. No Github é possivel seguir e acompanhar perfis pessoais e de organizações, além de acompanhar projetos em desenvolvimento. Cientistas estão cada vez mais usando o Github para compartilhamento de dados e códigos de publicações associados a publicações científicas.</p>
+<p>Diferenças entre Git e GitHub:</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Git</th>
+<th align="center">Github</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">É um software</td>
+<td align="center">É um serviço</td>
+</tr>
+<tr class="even">
+<td align="center">Instalado localmente em sua máquina</td>
+<td align="center">Está na rede</td>
+</tr>
+<tr class="odd">
+<td align="center">Usado em linha de comando</td>
+<td align="center">Apresenta uma interface gráfica</td>
+</tr>
+<tr class="even">
+<td align="center">Gereciar diferentes versões em um repo Git</td>
+<td align="center">Armazenar uma cópia de seu repositório Git</td>
+</tr>
+<tr class="odd">
+<td align="center">Funcionalidades VCS para gerenciar versões</td>
+<td align="center">Funcionalidades VCS dentre outras</td>
+</tr>
+</tbody>
+</table>
+<p>*VCS - Version Control System</p>
+<hr />
+</div>
+<div id="instalando-git-github-rstudio" class="section level1">
+<h1>6. Instalando Git-Github-RStudio</h1>
+<p>Para poder utilizar o Git, Github e compartilhar projeto realizados com o Rstudio, você precisa antes fazer o seguinte:</p>
+<ol style="list-style-type: decimal">
+<li>Instalar em seu o computador o <a href="https://git-scm.com/">Git</a></li>
+<li>Instalar o <a href="https://cran.r-project.org/">R</a> e RStudio <a href="https://www.rstudio.com/">RStudio</a></li>
+<li>Criar uma conta no <a href="https://github.com/">Github</a> <br><br></li>
+</ol>
+<div id="configurando-o-git-no-rstudio" class="section level2">
+<h2>6.1 Configurando o Git no RStudio</h2>
+<p>Abra o RStudio e agora vamos configurar o Git para identifdicar você. No RStudio ache a aba Terminal e insira os seguintes comados, um de cada vez. <br><br></p>
+<p>Substitua <code>USER</code> e <code>USER@SEUEMAIL.COM</code> com o seu. No meu caso seria <code>silveira.tcl</code> e <code>silveira.tcl@gmail.com</code>;</p>
+<pre class="r"><code># mostrando a versão do git em seu computador
+git --version
+
+# mostrando o caminho das pastas em seu Mac/Linux
+which git
+
+# mostrando o caminho das pastas no Windows
+where git
+
+# troque USER com o seu nome de usuário do Github
+git config –-global user.name USER
+
+# troque USER@SEUEMAIL com o seu email resgistrado no Github
+git config –-global user.email USER@SEUEMAIL.COM
+
+# use git &quot;merge&quot; (default) para resolver possíveis conflitos git &quot;pull&quot; conflicts
+git config --global pull.rebase true
+
+# listando &quot;config&quot; para confirmar as variáveis de user.* 
+git config --list</code></pre>
+<p><br><br></p>
+<p>Agora acesse <strong>Tools-&gt;Global Options</strong> e selecione <strong>Git/SVN</strong> no menu lateral. No campo <em>Git executable</em> insira o caminho das pastas baseados nos comandos anteriores (Note que eles são diferentes para Mac/Linux <code>which git</code> e Windows <code>where git</code>).</p>
+<p>Essa configuração parece ser desafiadora em um primeiro momento, mas felizmente este procedimento é bem documentado em <a href="https://happygitwithr.com/rstudio-see-git.html#tell-rstudio-where-to-find-git">Happy Git and GitHub for the useR</a> se tiver algum problema.<br><br></p>
+</div>
+<div id="criando-repositório-ou-repo-no-github" class="section level2">
+<h2>6.2 Criando repositório (ou REPO) no GitHub</h2>
+<p>Após a instalação e configuração do <strong>Git/R/RStudio</strong> e criar uma conta no <strong>Github</strong>, o próximo passo é criar repositório.</p>
+<p>Logo após fazer o login no <strong>Github</strong> você deverá ver a página inicial de seu perfil como abaixo.</p>
+<p><img src= "figs/git_5.png" style= "width:100%"> <br><br></p>
+<p>À esquerda você poderá ver a lista com alguns repositórios e o botão <strong>New</strong>. Clique neste botão para criarmos um novo repositório. Nesta página você vai configurar o seu repositório:</p>
+<ol style="list-style-type: decimal">
+<li>Dê um nome para seu repo</li>
+<li>Especifique se será público ou privado</li>
+<li>Especifique se você quer adicionar um aquivo README, .gitinore e o tipo de licença (caso seja público. Mais detalhes no link “learn more”)</li>
+</ol>
+<p><img src= "figs/git_6.png" style= "width:70%"></p>
+<p>Depois de configurado você pode clicar em <strong>Create respository</strong>.</p>
+<p>Agora que temos o repositório no Github, o próximo passo é cloná-lo com um projeto com controle de versão no RStudio. Deixe a página acima aberta no seu navegador, pois vamos precisar dela no próximo passo. <br><br></p>
+</div>
+<div id="criando-projeto-no-rstudio-e-conetando-e-clonando-o-repo-do-github" class="section level2">
+<h2>6.3 Criando projeto no RStudio e conetando e clonando o repo do Github</h2>
+<ol style="list-style-type: decimal">
+<li><p>Abra o RStudio e clique em <strong>File -&gt; New Project</strong></p></li>
+<li><p>Uma caixa irá abrir, selecione <strong>Version Control</strong></p></li>
+</ol>
+<p><img src= "figs/git_7.png" style= "width:70%"> <br><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Logo após abrirá em outra janela, selecione <strong>Git</strong>. Uma nova janela abrirá.</li>
+</ol>
+<p><img src= "figs/git_8.png" style= "width:70%"> <br><br></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Volte ao Github, copie a URL do repo que você criou em <strong>4.2 Criando repositório no GitHub (ou REPO)</strong></li>
+</ol>
+<p><img src= "figs/git_9.png" style= "width:100%"> <br><br></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Volte ao RStudio e cole a URL do repo em <strong>Repository URL</strong></li>
+</ol>
+<p><img src= "figs/git_10.png" style= "width:70%"> <br><br></p>
+<ol start="6" style="list-style-type: decimal">
+<li><p>Na mesma janela digite o nome do diretório em <strong>Project directory name</strong></p></li>
+<li><p>Ainda na mesma janela, selecione a pasta onde colocar o repositório clonado do github no campo <strong>Create project as subdirectory of</strong> <br><br></p></li>
+</ol>
+<p>Se tudo ocorreu sem problemas até aqui, você clonou o repo do <strong>Github</strong> em sua máquina. A partir de agora você está apto a realizar mundanças controladas pelo <strong>Git</strong> e sincronizar tudo no repositório <em>on line</em>.</p>
+<p>Nas próximas seções veremos alguns comandos básicos de controle de versão no nosso repo recém criado.</p>
+<hr />
+</div>
+</div>
+<div id="workflow-rstudiogithub" class="section level1">
+<h1>7. Workflow RStudio/Github</h1>
+<div id="básico-commit-e-push" class="section level2">
+<h2>7.1 Básico: <code>commit</code> e <code>push</code></h2>
+<p>Agora podemos criar um script teste para fazermos o primeiro <code>commit</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg> e <code>push</code> <svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zM393.4 288H328v112c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V288h-65.4c-14.3 0-21.4-17.2-11.3-27.3l105.4-105.4c6.2-6.2 16.4-6.2 22.6 0l105.4 105.4c10.1 10.1 2.9 27.3-11.3 27.3z"></path></svg>, abaixo um resumo do será realizado:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Comando</th>
+<th align="center">Ação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>commit</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg></td>
+<td align="center">Nova versão, anota as alterações salvas e cria um código</td>
+</tr>
+<tr class="even">
+<td align="center"><code>push</code> <svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zM393.4 288H328v112c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V288h-65.4c-14.3 0-21.4-17.2-11.3-27.3l105.4-105.4c6.2-6.2 16.4-6.2 22.6 0l105.4 105.4c10.1 10.1 2.9 27.3-11.3 27.3z"></path></svg></td>
+<td align="center">Envia as alterações para seu repositório no Github</td>
+</tr>
+</tbody>
+</table>
+<p>Observando o painel <strong>Files</strong> no <strong>RStudio</strong> você verá que alguns arquivos foram adicionados. Temos um <strong>.gitignore</strong>, <strong>.Rhistory</strong> e <strong>teste_repositorio.Rproj</strong>. Criando um novo script e salvando (script_teste.R), o painel <strong>Files</strong> ficará como abaixo.</p>
+<p><img src= "figs/git_11.png" style= "width:70%"> <br><br></p>
+<p>Após a criar e salvar um script teste, o painel <strong>Git</strong> deve estar parecido como o abaixo:</p>
+<p><img src= "figs/git_12.png" style= "width:70%"> <br><br></p>
+<p>Veja que estão listados alguns arquivos, toda e qualquer alteração salva neste diretório será listada neste painel. Se você selecionar <strong>Staged</strong> <svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg> você está aprovando a mundança no arquivo. Em <strong>Status</strong> pode ser <strong>A</strong> de “added”, <strong>M</strong> significa “modified” e ainda não adicionado.</p>
+<p><img src= "figs/git_13.png" style= "width:70%"> <br><br></p>
+<p>Com todos os arquivos marcados <strong>Staged</strong> <svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>, o próximo passo é fazer um <code>commit</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg>, ou seja, registrar (ou anotar) todas as alterações realizadas. Todo o commit deve ter uma mensagem. Clicando em <strong>commit</strong> você registra as alterações e pode comentar as principais mudanças no campo <strong>Commit message</strong>, por exemplo. Clique em <code>commit</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg> nesta janela <strong>Review Changes</strong>.</p>
+<p><img src= "figs/git_14.png" style= "width:70%"> <br><br></p>
+<p>Após isso você verá a janela abaixo mostrando a execução do comando <code>commit</code>.</p>
+<p><img src= "figs/git_15.png" style= "width:70%"> <br><br></p>
+<p>Após isso estamos aptos para fazer o <code>push</code> <svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zM393.4 288H328v112c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V288h-65.4c-14.3 0-21.4-17.2-11.3-27.3l105.4-105.4c6.2-6.2 16.4-6.2 22.6 0l105.4 105.4c10.1 10.1 2.9 27.3-11.3 27.3z"></path></svg>. Clicando em <code>push</code> <svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zM393.4 288H328v112c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V288h-65.4c-14.3 0-21.4-17.2-11.3-27.3l105.4-105.4c6.2-6.2 16.4-6.2 22.6 0l105.4 105.4c10.1 10.1 2.9 27.3-11.3 27.3z"></path></svg> você envia de fato a nova versão para o seu repo no Github.</p>
+<p><img src= "figs/git_16.png" style= "width:70%"> <br><br></p>
+<p>Depois de chegar até aqui, confira seu repositório no <strong>Github</strong> e veja a versão atualizada. Deve estar similar a figura abaixo.</p>
+<p><img src= "figs/git_17.png" style= "width:70%"> <br><br></p>
+</div>
+<div id="intermediário-branch-e-merge" class="section level2">
+<h2>7.2 Intermediário: <code>branch</code> e <code>merge</code></h2>
+<p>Os comandos <code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg> e <code>merge</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.254V3.25v.005a.75.75 0 110-.005v.004zm.45 1.9a2.25 2.25 0 10-1.95.218v5.256a2.25 2.25 0 101.5 0V7.123A5.735 5.735 0 009.25 9h1.378a2.251 2.251 0 100-1.5H9.25a4.25 4.25 0 01-3.8-2.346zM12.75 9a.75.75 0 100-1.5.75.75 0 000 1.5zm-8.5 4.5a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg> são muito úteis quando queremos testar diferentes caminhos. Imagine que você quer fazer uma figura e segue uma linha de raciocínio. Depois de se deparar com o resultado final, você percebe que poderia seguir um caminho diferente. Para não perder a primeira versão, que está no ramo <strong>master</strong>, você pode criar um <code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg>, uma diferente abordagem em paralelo. Abaixo um resumo que que será realizado nesta seção:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Comando</th>
+<th align="center">Ação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg></td>
+<td align="center">Cria um novo “ramo” em seu repositório</td>
+</tr>
+<tr class="even">
+<td align="center"><code>merge</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.254V3.25v.005a.75.75 0 110-.005v.004zm.45 1.9a2.25 2.25 0 10-1.95.218v5.256a2.25 2.25 0 101.5 0V7.123A5.735 5.735 0 009.25 9h1.378a2.251 2.251 0 100-1.5H9.25a4.25 4.25 0 01-3.8-2.346zM12.75 9a.75.75 0 100-1.5.75.75 0 000 1.5zm-8.5 4.5a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg></td>
+<td align="center">Incorporar um ramo criado ao ramo “master”</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+<p>O comando git no terminal é <code>git branch</code>. No RStudio você pode criar um novo <code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg> clicando botão como indicadoi abaixo.</p>
+<p><img src= "figs/git_18.png" style= "width:70%"> <br><br></p>
+<p>Depois de criar o novo <code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg> nomeado <strong>Caminho_2</strong>, foram realizadas algumas mudanças no script, fazendo um <code>commit</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg> e <code>push</code> <svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zM393.4 288H328v112c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V288h-65.4c-14.3 0-21.4-17.2-11.3-27.3l105.4-105.4c6.2-6.2 16.4-6.2 22.6 0l105.4 105.4c10.1 10.1 2.9 27.3-11.3 27.3z"></path></svg> neste ramo. Depois disso, será feito um <code>merge</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.254V3.25v.005a.75.75 0 110-.005v.004zm.45 1.9a2.25 2.25 0 10-1.95.218v5.256a2.25 2.25 0 101.5 0V7.123A5.735 5.735 0 009.25 9h1.378a2.251 2.251 0 100-1.5H9.25a4.25 4.25 0 01-3.8-2.346zM12.75 9a.75.75 0 100-1.5.75.75 0 000 1.5zm-8.5 4.5a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg> incorporando as modificações ao ramo principal <strong>master</strong>. No RStudio é possível somente criar os ramos pela aba <strong>Git</strong>, para fazer o <code>merge</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.254V3.25v.005a.75.75 0 110-.005v.004zm.45 1.9a2.25 2.25 0 10-1.95.218v5.256a2.25 2.25 0 101.5 0V7.123A5.735 5.735 0 009.25 9h1.378a2.251 2.251 0 100-1.5H9.25a4.25 4.25 0 01-3.8-2.346zM12.75 9a.75.75 0 100-1.5.75.75 0 000 1.5zm-8.5 4.5a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg> você terá que usar linha de comando no <strong>Terminal</strong>. Note que na interface de <code>commit</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg>, temos sempre que preencher o campo <strong>commit message</strong>. Abaixo, em verde, são destacadas as mudanças realizadas, vermelho a versão anterior.</p>
+<p><img src= "figs/git_19.png" style= "width:70%"> <br><br></p>
+<p>Para fazer o merge do ramo <strong>Caminho_2</strong>, primeiro você precisa voltar para o ramo <strong>master</strong>. Na aba git do RStudio troque de <strong>Caminho_2</strong> para <strong>master</strong>. Depois disso digite os seguintes comandos no <strong>Terminal</strong>, um de cada vez.</p>
+<pre class="r"><code># Fazendo o &quot;merge&quot; de &quot;Caminho_2&quot; ao &quot;master&quot;
+git merge Caminho_2
+
+# Fazendo o &quot;push&quot; para o repositório
+git push</code></pre>
+<p>Você verá na aba <strong>Terminal</strong> algo semelhante a figura abaixo.</p>
+<p><img src= "figs/git_20.png" style= "width:100%"> <br><br></p>
+<p>Voltando para o repositório no <strong>Github</strong> podemos visualizar a versão atualizada, mais <strong>upstream</strong> do repositório no ramo <code>master</code>.</p>
+<p><img src= "figs/git_21.png" style= "width:60%"> <br><br></p>
+</div>
+<div id="avançado-fork-branch-pull-request-e-merge" class="section level2">
+<h2>7.3 Avançado: <code>fork</code>, <code>branch</code>, <code>pull request</code> e <code>merge</code></h2>
+<p>Agora que já vimos como fazer as principais ações usando o <strong>Git</strong> e <strong>Github</strong>, a partir deste ponto podemos executar um grupo de comandos que consiste na grande vantagem de se usar o <strong>Github</strong>: a colaboração com controle de versão. Abaixo um resumo dos comandos abordados:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Comando</th>
+<th align="center">Ação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>fork</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg></td>
+<td align="center">Copia um diretório do Github</td>
+</tr>
+<tr class="even">
+<td align="center"><code>branch</code> <svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M384 144c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 36.4 24.3 67.1 57.5 76.8-.6 16.1-4.2 28.5-11 36.9-15.4 19.2-49.3 22.4-85.2 25.7-28.2 2.6-57.4 5.4-81.3 16.9v-144c32.5-10.2 56-40.5 56-76.3 0-44.2-35.8-80-80-80S0 35.8 0 80c0 35.8 23.5 66.1 56 76.3v199.3C23.5 365.9 0 396.2 0 432c0 44.2 35.8 80 80 80s80-35.8 80-80c0-34-21.2-63.1-51.2-74.6 3.1-5.2 7.8-9.8 14.9-13.4 16.2-8.2 40.4-10.4 66.1-12.8 42.2-3.9 90-8.4 118.2-43.4 14-17.4 21.1-39.8 21.6-67.9 31.6-10.8 54.4-40.7 54.4-75.9zM80 64c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16zm0 384c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16zm224-320c8.8 0 16 7.2 16 16s-7.2 16-16 16-16-7.2-16-16 7.2-16 16-16z"></path></svg></td>
+<td align="center">Cria um novo “ramo” em seu repositório</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>pull request</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"></path></svg></td>
+<td align="center">Solitação de contribuição</td>
+</tr>
+<tr class="even">
+<td align="center"><code>merge</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.254V3.25v.005a.75.75 0 110-.005v.004zm.45 1.9a2.25 2.25 0 10-1.95.218v5.256a2.25 2.25 0 101.5 0V7.123A5.735 5.735 0 009.25 9h1.378a2.251 2.251 0 100-1.5H9.25a4.25 4.25 0 01-3.8-2.346zM12.75 9a.75.75 0 100-1.5.75.75 0 000 1.5zm-8.5 4.5a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg></td>
+<td align="center">Incorporar um ramo criado ao ramo “master”</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+<p>Para colaborar em um repositório você antes de mais nada copiar os arquivos para o seu <strong>Github</strong>. Essa ação é executada com o comando <code>fork</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg>. Por exemplo, se dirija ao <a href="https://github.com/peld-iloc/repo_test">respositório de teste</a> e localize no alto da página o botão <code>fork</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg>. Depois escolha onde você gostaria de colocar, escolha seu usuário. No canto esquerdo da página mostrará que o repo está em seu usuário também.</p>
+<p><img src= "figs/git_22.png" style= "width:60%"> <br><br></p>
+<p>Agora faça novamente os passos descritos em <strong>4.2 Criando repositório no GitHub (ou REPO)</strong>. Tenha certeza de criar uma nova pasta fora das pastas que você já está trabalhando.</p>
+<p>Faça alguma alteração no script, insira uma linha de código, depois faça <code>commit</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M10.5 7.75a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zm1.43.75a4.002 4.002 0 01-7.86 0H.75a.75.75 0 110-1.5h3.32a4.001 4.001 0 017.86 0h3.32a.75.75 0 110 1.5h-3.32z"></path></svg> e <code>push</code> <svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zM393.4 288H328v112c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V288h-65.4c-14.3 0-21.4-17.2-11.3-27.3l105.4-105.4c6.2-6.2 16.4-6.2 22.6 0l105.4 105.4c10.1 10.1 2.9 27.3-11.3 27.3z"></path></svg>. Note que seu repositório será atualizado. Navegue até o <a href="https://github.com/peld-iloc/repo_test">respositório de teste</a> recém clonado e clique em <strong>Contribute</strong>.</p>
+<p><img src= "figs/git_23.png" style= "width:60%"> <br><br></p>
+<p>Aparecerá uma nova página comparando o script antigo com o novo.</p>
+<p><img src= "figs/git_24.png" style= "width:60%"> <br><br></p>
+<p>Clique em <strong>Create pull request</strong>. Com o objetivo de facilitar a colaboração, é eficiente você comentar o objetivo da sua contribuição.</p>
+<p><img src= "figs/git_25.png" style= "width:60%"> <br><br></p>
+<p>Clique novamente no botão <strong>Create pull request</strong> para confirmar sua contribuição. Visualize a página <a href="https://github.com/peld-iloc/repo_test">https://github.com/peld-iloc/repo_test</a> e veja como ficou.</p>
+<p><img src= "figs/git_26.png" style= "width:60%"> <br><br></p>
+<p>Agora que você fez um <code>pull request</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"></path></svg>, basta você aguardar o adminstrador do repositório analisar sua sugestão e fazer o <code>merge</code> <svg viewBox="0 0 16 16" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M5 3.254V3.25v.005a.75.75 0 110-.005v.004zm.45 1.9a2.25 2.25 0 10-1.95.218v5.256a2.25 2.25 0 101.5 0V7.123A5.735 5.735 0 009.25 9h1.378a2.251 2.251 0 100-1.5H9.25a4.25 4.25 0 01-3.8-2.346zM12.75 9a.75.75 0 100-1.5.75.75 0 000 1.5zm-8.5 4.5a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg> no ramo <strong>master</strong>.</p>
+<p>Esse foi um exercício simples de colaboração usando Git e Github. Para mais informações sobre o workflow usando o Github, acesse <a href="https://guides.github.com/introduction/flow/">Github Guides</a>. Um guia muito útil também é o <a href="https://happygitwithr.com/">Happy Git and Github for the useR</a>.</p>
+<hr />
+</div>
+</div>
+<div id="referências-e-links-úteis" class="section level1">
+<h1>8. Referências e links úteis</h1>
+<ul>
+<li><a href="https://guides.github.com/">Guides Github</a></li>
+<li><a href="http://swcarpentry.github.io/git-novice/">Version Control with Git</a></li>
+<li><a href="https://happygitwithr.com/">Happy Git and Github for the useR</a></li>
+<li><a href="https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN">Version Control with Git and SVN - RStudio</a></li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

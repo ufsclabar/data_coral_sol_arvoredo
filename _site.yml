@@ -1,0 +1,29 @@
+name: "Dados Coral Sol"
+fontsize: 20
+navbar:
+  title: "Banco de Dados Coral Sol"
+  left:
+    - text: "Diretrizes BD"
+      href: padrao_db.html
+      icon: fa-database fa-lg
+    - text: "Boas práticas BD"
+      href: dados.html
+      icon: fa-check-double fa-lg
+    - text: "Github LABAR"
+      href: github.html
+      icon: fa-github fa-lg
+    
+    
+  right: 
+    - icon: fa-envelope fa-lg
+      href: mailto:<silveira.tcl@gmail.com>
+    - icon: fa-github fa-lg
+      href: https://github.com/ufsclabar
+    
+      
+output_dir: "docs"
+output:
+  html_document:
+    theme: cerulean
+
+    

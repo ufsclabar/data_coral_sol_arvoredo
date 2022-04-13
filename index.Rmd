@@ -1,0 +1,23 @@
+---
+title: "Dados Coral Sol"
+---
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Visão Geral
+
+Esta página tem como objetivo ser um documento de referência sobre procedimentos empregados na sistematização e publicação dos bancos de dados construídos pelo **Plano de Ação para Prevenção e Controle do Coral-Sol na REBIO Arvoredo e Entorno**.
+<br>
+As modificações estão sendo controladas por controle de versão Git no repositório [Github](https://github.com/ufsclabar/data_coral_sol_arvoredo) do [LABAR](https://labarufsc.weebly.com/).
+ 
+
+
+
+

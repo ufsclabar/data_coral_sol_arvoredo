@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Boas práticas para Bancos de Dados</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Banco de Dados Coral Sol</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="padrao_db.html">
+    <span class="fa fa-database fa-lg"></span>
+     
+    Diretrizes BD
+  </a>
+</li>
+<li>
+  <a href="dados.html">
+    <span class="fa fa-check-double fa-lg"></span>
+     
+    Boas práticas BD
+  </a>
+</li>
+<li>
+  <a href="github.html">
+    <span class="fa fa-github fa-lg"></span>
+     
+    Github LABAR
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:&lt;silveira.tcl@gmail.com&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/ufsclabar">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Boas práticas para Bancos de Dados</h1>
+
+</div>
+
+
+<style>
+body {
+text-align: justify}
+</style>
+<div id="introdução" class="section level1">
+<h1>1. Introdução</h1>
+<p>Todo e qualquer projeto de pesquisa terá como uma parte importante a coleta de dados. Os dados obtidos em amostragens (organismos bentos, peixes recifas,…) são de alguma maneira registrados em campo e posteriormente digitalizados em forma de planilhas (excel, e.g.). Após a digitação dos dados, o passo seguinte é explorarmos de alguma maneira estas informações. As informações podem ser visualizadas em gráficos em tabelas…</p>
+<p>No entanto, a leitura dos dados pelo olhar humano e a leitura realizada por uma “máquina” são realizadas de maneiras completamente distintas. A leitura humana de planilhas é visual, tendemos a destacar informações com cores e tabulações etc… Já a leitura dos dados realizada por algoritmos opera de uma maneira completamente diferente.</p>
+<p>Para que possamos processar os dados coletados, primeiramente estes devem ser lidos por algoritmos de maneira correta. Sendo realizada a leitura precisamos ainda estruturá-los de forma que possam ser lidos, formatados e recodificados para a leitura humana. Exitem inúmeras maneiras organizar um banco de dados e algumas estruturas de dados se tornam quase impossívei de ler e manipular. Nesse sentido, o objetivo desta sessão e apresentar um guia de boas práticas de formatação de planilhas de dados possibilitando uma fácil leitura e manipulação.</p>
+<p><img src= "figs/data_10.png" style= "width 100%"></p>
+<p><em>Dados desorganizados não tem serventia alguma (tidy: “Given to keeping things clean and in order”)</em></p>
+</div>
+<div id="objetivos-específicos" class="section level1">
+<h1>2. Objetivos específicos</h1>
+<ul>
+<li>Apresentar um guia de estruturação de banco de dados que possa ser lido por qualquer algoritmo</li>
+<li>Identificar diferentes formatos de dados</li>
+<li>Identificar possíveis armadilhas no momento da digitação</li>
+<li>Apresentar estratégias para minimização de erros de digitação</li>
+<li>Tornar o seu banco de dados compreessível por qualquer pessoa</li>
+</ul>
+<hr />
+</div>
+<div id="estruturação-de-planilhas" class="section level1">
+<h1>3. Estruturação de Planilhas</h1>
+<div id="leitura-humana-vs.-leitura-dos-computadores" class="section level2">
+<h2>3.1 Leitura Humana vs. Leitura dos Computadores</h2>
+<p>Tenha em mente que o processo do uso da informação em pesquisas apresenta etapas bem distintas.</p>
+<ul>
+<li>Aquisição - Obtenção propriamente dita dos dados (coletas, fotos, entrevistas,…)</li>
+<li>Organização - Organização da informação para que possa ser lida e interpretada (logica no armazenamento: estrutura dos dados)</li>
+<li>Visualização - Produção de gráficos e tabelas com os dados obtidos</li>
+<li>Modelagem - Emprego de análises estatísticas, construção de modelos e testes de hipóteses.</li>
+<li>Comunicação - Resultados dos passos anteriores <br><br></li>
+</ul>
+<p><img src= "figs/data_11.png" style= "width:100%"></p>
+<p><em>Etapas do processamento da informação <a href="https://r4ds.had.co.nz">R for Data Science</a></em> <br><br></p>
+<svg viewBox="0 0 576 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg">
+<path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path>
+</svg>
+<p>Desta maneira, quando estiver estruturando seu banco de dados, não pule etapas ou mesmo misture estes passos em uma planilhas do excel. Isto torna a informação inviável de ser acessada por outros meios de leitura (R software, e.g.). Muitas vezes nos sentimos tentados a fazer uma formatação gráfica ou uma visual no excel, mas estas não contribuirão para a manipulação e visualização das informações. <br><br></p>
+<p><img src= "figs/data_1.png" style= "width:100%"></p>
+<p><em>Evite planilhas de dados “mistos”</em> <br><br></p>
+<p>Portanto, tente executar uma etapa de cada vez e evite misturar dados coletados com tentativas de visualização, análises estatísticas e formatações visuais. <br><br></p>
+</div>
+<div id="formatos" class="section level2">
+<h2>3.2 Formatos</h2>
+<p>Existem diversas maneiras de organizar um banco de dados e alguns formatos são muito difíceis de intepretar e manipular. Abaixo são apresentadas algumas formas de organização de dados de um mesmo conjunto de informações.<br />
+<br><br></p>
+<pre class="r"><code>table1</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583</code></pre>
+<pre class="r"><code>table2</code></pre>
+<pre><code>## # A tibble: 12 x 4
+##    country      year type            count
+##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583</code></pre>
+<pre class="r"><code>table3</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   country      year rate             
+## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583</code></pre>
+<pre class="r"><code># Dados apresentados em duas planilhas ou &quot;tibbles&quot;
+table4a</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   country     `1999` `2000`
+## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766</code></pre>
+<pre class="r"><code>table4b</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   country         `1999`     `2000`
+## * &lt;chr&gt;            &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan   19987071   20595360
+## 2 Brazil       172006362  174504898
+## 3 China       1272915272 1280428583</code></pre>
+<p><br><br></p>
+<p>Analisando os conjuntos de dados acima, qual você julga ser o mais fácil de ler e interpretar? Provavelmente você escolheu a <code>table1</code>. Esta conformação de dados é maneira mais simples e fácil de manipular. Este formato também é conhecido pelo formato “longo”. Os outros formatos são possíveis de serem manipulados, mas esta tarefa pode ser bem mais desafiadora.</p>
+<p>O tipo de organização apresentada no primeiro exemplo é denominda por Wickham e Grolemund (2017) como “tidy data”.Esta organização de dados é regida por três regras:</p>
+<ul>
+<li><p>Cada variável deve ter sua própria coluna</p></li>
+<li><p>Cada observação deve ter sua própria linha</p></li>
+<li><p>Cada valor único deve ter sua própria célula</p></li>
+</ul>
+<p><img src= "figs/data_2.png" style= "width:100%"></p>
+<p><em>As três regras para um conjunto de dados “tidy” <a href="https://r4ds.had.co.nz">R for Data Science</a></em></p>
+<svg viewBox="0 0 576 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg">
+<path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path>
+</svg>
+<p><strong>Se um conjunto de dados seguir estas três regras, o processamento da informação será muito mais fácil.</strong> <br><br></p>
+<p>Existem outros tipos de arranjos de dados e um dos formatos que rotineiramente precisamos para análises estatísticas é o formato “largo”, ou uma <strong>tabela de dados</strong>. Neste formato cada linha é uma unidade amostral e as colunas são as variáveis. Cada unidade amostral adicionada acrescenta uma linha para baixo. Cada variável adicionada acrescenta uma coluna a esquerda. Este formato é o utilizado na grande maioria das análises estatísticas e geralmente advém de uma banco de dados em formato “tidy”.</p>
+<svg viewBox="0 0 576 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg">
+<path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path>
+</svg>
+<p>Portanto, quando falamos em bancos de dados, estamos nos referindo a um conjunto de informações que podem ser transformadas em <strong>tabelas</strong>. Ainda, os bancos de dados podem apresentar estruturas bem complexas e com diferentes arranjos. Para os nossos problemas diários, nos referimos nesta seção a simples arquivos com uma lógica de armazenamento que permite o fácil acesso e manipulação.</p>
+<p>Imagine a construção de uma tabela com os dados da <code>table1</code> onde queremos a soma dos casos em cada país nos anos 1999 e 2000.</p>
+<pre class="r"><code># Criando uma tabela com a soma de casos nos países 
+taxa_table1_df = table1 %&gt;% 
+  group_by(country) %&gt;% 
+  summarize(sum_cases = sum(cases))
+taxa_table1_df</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   country     sum_cases
+##   &lt;chr&gt;           &lt;int&gt;
+## 1 Afghanistan      3411
+## 2 Brazil         118225
+## 3 China          426024</code></pre>
+<p>Essa é uma demonstração de criação e uma tabela larga oriunda de um banco de dados “tidy”.<br />
+<br><br></p>
+</div>
+<div id="lógica-de-construção-hierárquica" class="section level2">
+<h2>3.3 Lógica de Construção Hierárquica</h2>
+<p>O emprego de uma lógica hierárquica na construção dos bancos de dados ajuda muito no momento da digitação dos dados e na sua compreessão quanto a estrutura. Entende-se por lógica hirárquica a estruturação do banco de dados com as colunas a esquerda com variáveis mais abrangentes e colunas com maior detalhamento sendo adicionadas a esquerda.</p>
+<p>Abaixo um exemplo baseado nos dados de peixes recifais.</p>
+<p><img src= "figs/data_3.png" style= "width:100%"></p>
+<p><em>Hierarquia quanto a abrangência das variáveis</em></p>
+<p>No exemplo, vemos que as colunas mais a esquerda representam as ilhas e locais nas ilhas. Ao passo que as colunas vão sendo acrescentadas, as variáveis começam a detalhar cada vez mais a informação (coordenadas, profundidade, espécies, etc…) <br><br></p>
+</div>
+<div id="nomes-de-variáveis" class="section level2">
+<h2>3.4 Nomes de Variáveis</h2>
+<p><strong>Nomes de variáveis</strong> são uma informação chave para que o banco de dados seja lido com maior facilidade por qualquer pessoa. Nomes muito abreviados ou com informação incompleta tendem a dificultar o preenchimento das planilhas e a compreenssão.</p>
+<p>A sugestão é utilizar <strong>nomes curtos e informativos</strong>. Por exemplo, um bom nome para a variável temperatua pode ser “temp”, nome curto e informativo. No entanto, com esse nome não está explícita a unidade da variável. Uma sugestão que atenderia requisitos de simplicidade com informação completa poderia ser “temp_c”, temperatura em graus Celsius.</p>
+<p>Abaixo algumas sugestões de nomes de variáveis:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Variável</th>
+<th align="center">Boa opção</th>
+<th align="center">Evitar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Temperatura máxima (graus Celsius)</td>
+<td align="center">max_temp_c</td>
+<td align="center">Maximun Temp (C°)</td>
+</tr>
+<tr class="even">
+<td align="center">Precipitação (mm)</td>
+<td align="center">precip_mm</td>
+<td align="center">prec</td>
+</tr>
+<tr class="odd">
+<td align="center">Massa (Kg)</td>
+<td align="center">massa_kg</td>
+<td align="center">Massa (Kg)</td>
+</tr>
+<tr class="even">
+<td align="center">Visibilidade horizontal (metros)</td>
+<td align="center">vis_hrz_m</td>
+<td align="center">visib (m)</td>
+</tr>
+<tr class="odd">
+<td align="center">Latitude (graus decimais)</td>
+<td align="center">lat_DD</td>
+<td align="center">lat</td>
+</tr>
+</tbody>
+</table>
+<p>Em resumo: + Nomes curtos e informativos - informando variável e unidade + Evitar espaços em branco + Evitar caracteres especiais (acentos, ", # e º, por exemplo) + Evitar mistura caixa alta com caixa baixa <br><br></p>
+</div>
+<div id="consistência-de-formato-de-variáveis" class="section level2">
+<h2>3.5 Consistência de formato de variáveis</h2>
+<p>As variáveis em um banco de dados podem ser de diferentes tipos (categóricas, numéricas, continuas, por exemplo). Para evitar problemas com a manipulação e processamento é preciso prestar atenção ao formato e ser consistente.</p>
+<svg viewBox="0 0 576 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg">
+<path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path>
+</svg>
+<p>Principais problemas:</p>
+<ul>
+<li>Separador do decimal (vírgula ou ponto)</li>
+<li>Estado de variáveis - (“noronha” é diferente de “Noronha”)</li>
+</ul>
+<p>Uma ferramenta do Excel que pode ajudar a evitar erros de digitação encontra-se na aba Dados =&gt; Validação de Dados. <br></p>
+<p><img src= "figs/data_4.png" style= "width:100%"></p>
+<p><img src= "figs/data_5.png" style= "width:50%"></p>
+<p>Na opção “Validação de Dados” estarão disponíveis algumas ferramentas para controle do que pode ser preenchido nas células.</p>
+<p><img src= "figs/data_6.png" style= "width:50%"></p>
+<p>A validação de dados pode ser realizada de diferentes maneiras:</p>
+<ul>
+<li>Permitindo somente números inteiros</li>
+<li>Somente decimais</li>
+<li>Seguido itens de uma lista (útil para nomes de espécies, localidades, coordenadas e nomes de quem amostrou/processou)</li>
+<li>Tempo, data, etc…</li>
+</ul>
+<p>Ainda podem ser adiciondas mensagens de <em>input</em> e <em>error</em>.</p>
+<p>Para usar recurso de lista do Excel é preciso ter uma aba com as listas que serão usadas. Ter uma aba no mesmo arquivo com a lista de ilhas, locais, coordendas para cada local e espécies com os nomes conferidos ajuda muito a evitar erros de digitação.</p>
+<p><img src= "figs/data_7.png" style= "width:100%"> <br><br></p>
+</div>
+<div id="datas" class="section level2">
+<h2>3.6 Datas</h2>
+<p>Quanto a inserção de datas, sugere-se que se separe os valores de dia, mês e ano. Outros formatos também podem ser eficientes (11-05-2021, por exemplo), mas devem ter consistência em todo o banco de dados. Havendo uma coluna para dia, mes e ano, evita-se confusões de formato dia/mes/ano ou mes/dia/ano, por exemplo.</p>
+<p><img src= "figs/data_9.png" style= "width:100%"> <br><br></p>
+</div>
+<div id="arquivo-readme" class="section level2">
+<h2>3.7 Arquivo README</h2>
+<p>Outra estratégia para evitar erros de digitação e tornar a informação de fácil compreenssão para pessoas é ter sempre disponível com os dados um arquivo, ou uma aba no excel, <strong>README</strong>. Estes arquivos são informações que não fazem parte do banco de dados, mas ajudam na comprenssão do que é apresentado.</p>
+<p>Neste tipo de arquivo, que podem ser chamados também de <em>metadados</em>, podem ser apresentadas as seguintes informações:</p>
+<ul>
+<li>Como foram obtidas as variáveis</li>
+<li>Explicação contendo a unidade das variáveis</li>
+<li>Data da última atualização da base de dados</li>
+<li>Como incorporar novos dados</li>
+</ul>
+<p><img src= "figs/data_8.png" style= "width:100%"> <br><br></p>
+<p>Exemplo arquivo <a href="https://kkkgithub.com/peld-iloc/data_example/blob/main/peld_iloc_peixes_recifais_EXEMPLO_Thiago_Silveira_2020_08_11.zip"><strong>README refazer</strong></a></p>
+</div>
+<div id="ausência-de-informação" class="section level2">
+<h2>3.8 Ausência de informação</h2>
+<p>A ausência de uma informação em um banco de dados não quer dizer que ela é zero, e sim que esta não está acessível ou <strong>não foi amostrada</strong>. A recomendação é que sempre se use <strong>Na</strong> quando uma informação não estiver disponível. Simplesmente deixar em <strong>branco</strong> pode gerar confusão. pois não se sabe se foi esquecimento ou de fato um <strong>Na</strong>.</p>
+</div>
+<div id="controle-de-versão" class="section level2">
+<h2>3.9 Controle de Versão</h2>
+<p>O controle de versão da informação é uma prática muito importante e tornar isto parte do seu dia-a-dia pode evitar problemas futuros. Uma simples ação que pode ser empregada é <strong>nunca alterar os dados originais</strong>. Sempre que tiver um banco de dados em mãos, salve com outro nome e faça edições.</p>
+<p>Outro cuidado que pode ser tomado também é seguir uma lógica de nomeação de arquivos. Procurar ser o mais informativo possíve,l ajuda a organizar os arquivos e o acesso a informação.</p>
+<p>Abaixo algumas sugestões de nomeação de arquivos:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Nome pouco informativo</th>
+<th align="center">Sugestão</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">dados_monitoramento.xlsx</td>
+<td align="center">monitoramento_ThiagoS_2021_07_27.xlsx</td>
+</tr>
+<tr class="even">
+<td align="center">dados_energia.xlsx</td>
+<td align="center">energia_MarceloC_2021_07_27.xlsx</td>
+</tr>
+<tr class="odd">
+<td align="center">data_final_larvas.xlsx</td>
+<td align="center">larvas_AndreaG_2021_07_27.xlsx</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+<hr />
+</div>
+</div>
+<div id="referências-e-links-úteis" class="section level1">
+<h1>4. Referências e links úteis</h1>
+<p>Wickham, H. &amp; Grolemund, G. R for Data Science - import, tidy, transform, visualize, and model data. (O’Reilly Media, 2017).</p>
+<p><a href="https://datacarpentry.org/spreadsheet-ecology-lesson/" class="uri">https://datacarpentry.org/spreadsheet-ecology-lesson/</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
